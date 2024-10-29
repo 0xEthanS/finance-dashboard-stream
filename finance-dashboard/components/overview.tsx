@@ -11,16 +11,28 @@ import {
 
 
 
+// Define a type for the data points
+type DataPoint = {
+    date?: string;
+    value?: number;
+}
+
+
+
+
 export function Overview(
 	{ 
 		data = [] 
 	}: { 
-		data: { 
-			date?: string; 
-			value?: number 
-		}[] 
+		data: Array<DataPoint | null | undefined>
 	}
 ) {
+
+	const validData = data.filter((item): item is DataPoint => 
+        item !== null && item !== undefined
+    );
+
+
 	return (
 		<ResponsiveContainer 
 			width="100%" 
@@ -28,7 +40,7 @@ export function Overview(
 		>
 
 
-			<BarChart data={data}>
+			<BarChart data={validData}>
 
 				<XAxis 
 					dataKey="date" 

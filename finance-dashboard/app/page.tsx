@@ -137,17 +137,20 @@ export default function Page() {
 							<Card className="col-span-4">
 								<CardHeader>
 									<CardTitle>
-
 										{object?.timeSeriesChartName ?? ""}
-
 									</CardTitle>
 								</CardHeader>
 								<CardContent className="pl-2">
-									<Overview 
 
-										data={object?.timeSeries ?? []} 
 
-									/>
+								<Overview 
+									data={object?.timeSeries?.map(item => ({
+										date: item?.date,
+										value: item?.value
+									})) ?? []}
+								/>
+
+
 								</CardContent>
 							</Card>
 						</div>
