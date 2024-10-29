@@ -1,41 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { experimental_useObject as useObject } from 'ai/react';
 import { 
-	notificationSchema,
+	//notificationSchema,
 	dashboardSchema
 } from '@/app/api/use-object/schema';
+import { treasury } from '@/data/text';
+
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { 
-	Tabs, 
-	TabsContent, 
-	TabsList, 
-	TabsTrigger 
-} from "@/components/ui/tabs"
-import { 
-	Card, 
-	CardContent, 
-	CardHeader, 
-	CardTitle 
-} from "@/components/ui/card"
-import { treasury } from '@/data/text';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
 import { Overview } from '@/components/overview';
-import { ChartComponent } from '@/components/chart-component';
+import { useToast } from "@/components/hooks/use-toast"
 
 
 
 
 export default function Page() {
 
-
-	const [submitted, setSubmitted] = useState(false)
-
 	const [prompt, setPrompt] = useState(treasury)
 
 	const [openAIAPIKey, setOpenAIAPIKey] = useState('')
+
+	const { toast } = useToast()
 
 
 
@@ -45,7 +36,9 @@ export default function Page() {
 
 	const { 
 		object, 
-		submit 
+		submit,
+		error, 
+		isLoading
 	} = useObject(
 		{
 			api: '/api/use-object',
@@ -68,12 +61,26 @@ export default function Page() {
 	}
 
 
+	useEffect(() => {
+        if (error) {
+            toast({
+                title: "404 OpenAI Error - You do not have access to the model",
+                description: "Ensure that your API key is valid and that you have credits on your OpenAI account"
+            });
+        }
+    }, [error, toast]);
+
+
 
 
 	return (
 		<ScrollArea>
 			<div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
 				<Tabs defaultValue="overview" className="space-y-4">
+
+
+
+
 					<TabsList>
 
 						<TabsTrigger value="overview">
@@ -87,8 +94,9 @@ export default function Page() {
 					</TabsList>
 
 
-					<TabsContent value="overview" className="space-y-4">
 
+
+					<TabsContent value="overview" className="space-y-4">
 
 						<div>
 							<Textarea 
@@ -105,12 +113,38 @@ export default function Page() {
 								value={openAIAPIKey} 
 								onChange={handleOpenAIAPIKeyChange}
 							/>
-							<Button 
-								onClick={() => submit(prompt)}
-							>
-								Generate report
-							</Button>
+
+							<div className='flex flex-row'>
+								<Button 
+									className='mr-8'
+									onClick={() => submit(prompt)}
+								>
+									Generate report
+								</Button>
+
+
+
+
+								{isLoading && (
+									<div>
+										<svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg"
+											className="
+												size-5 
+												animate-spin 
+												stroke-zinc-600
+											"
+										>
+											<path d="M12 3v3m6.366-.366-2.12 2.12M21 12h-3m.366 6.366-2.12-2.12M12 21v-3m-6.366.366 2.12-2.12M3 12h3m-.366-6.366 2.12 2.12"></path>
+										</svg>
+									</div>
+								)}
+							</div>
+
+
+
+
 						</div>
+
 
 
 						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
