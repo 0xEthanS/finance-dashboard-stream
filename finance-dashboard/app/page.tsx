@@ -68,13 +68,18 @@ export default function Page() {
 			<div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
 				<Tabs defaultValue="overview" className="space-y-4">
 					<TabsList>
+
 						<TabsTrigger value="overview">
 							Overview
 						</TabsTrigger>
+
 						<TabsTrigger value="analytics" disabled>
 							Analytics
 						</TabsTrigger>
+
 					</TabsList>
+
+
 					<TabsContent value="overview" className="space-y-4">
 
 
@@ -99,8 +104,6 @@ export default function Page() {
 								Generate report
 							</Button>
 						</div>
-
-						
 
 
 						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -129,8 +132,6 @@ export default function Page() {
 							))}
 						</div>
 
-						
-
 
 						<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
 							<Card className="col-span-4">
@@ -151,14 +152,12 @@ export default function Page() {
 							</Card>
 						</div>
 						
-						
 
-
-
-
-
-				
 					</TabsContent>
+
+
+
+
 				</Tabs>
 			</div>
 		</ScrollArea>		
