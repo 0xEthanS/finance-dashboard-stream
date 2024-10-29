@@ -40,6 +40,9 @@ export default function Page() {
 
 
 
+
+
+
 	const { 
 		object, 
 		submit 
@@ -47,6 +50,10 @@ export default function Page() {
 		{
 			api: '/api/use-object',
 			schema: dashboardSchema,
+			headers: {
+                'Authorization': `${openAIAPIKey}`,
+                'Content-Type': 'application/json'
+            }
 		}
 	);
 
